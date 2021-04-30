@@ -3,10 +3,10 @@ services:
   postgres:
     image: "postgres:latest"
     environment:
-      POSTGRES_DB: cars
+      POSTGRES_DB: marketing
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-    container_name: "my_postgres"
+    container_name: "itau_postgres"
     ports:
       - "5432:5432"
 
@@ -27,7 +27,7 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - ./src/test/resources/storage/minio:/data
+      - ./datasets:/data
     environment:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
