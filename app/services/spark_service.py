@@ -11,8 +11,8 @@ class SparkService:
             .appName(app_name) \
             .getOrCreate()
 
-    def load_file(self, file_format, file_path):
+    def load_file(self, file_format, file_path, header="true"):
         return self.spark.read \
             .format(file_format) \
-            .option("header", "true") \
+            .option("header", header) \
             .load(file_path)

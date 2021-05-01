@@ -1,3 +1,4 @@
+from extract.customer_leads_ingestion import CustomerLeadsIngestion
 from extract.facebook_media_ads_costs_ingestion import FacebookMediaAdsCostsIngestion
 from extract.google_media_ads_costs_ingestion import GoogleMediaAdsCostsIngestion
 from services.postgres_service import PostgreSQLService
@@ -9,6 +10,8 @@ if __name__ == '__main__':
                                          database="marketing",
                                          user="admin",
                                          password="admin")
+    customer_leads_ingestion = CustomerLeadsIngestion(spark_service, postgres_service)
+    customer_leads_ingestion.execute()
     google_media_ads_costs_ingestion = GoogleMediaAdsCostsIngestion(spark_service, postgres_service)
     google_media_ads_costs_ingestion.execute()
     facebook_media_ads_costs_ingestion = FacebookMediaAdsCostsIngestion(spark_service, postgres_service)
