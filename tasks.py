@@ -16,6 +16,23 @@ def execute_migration(c):
     c.run("alembic upgrade head")
 
 
+@task
+def truncate_sor(c):
+    conn = psycopg2.connect("dbname='marketing' user='admin' host='localhost' password='admin' connect_timeout=1 ")
+    tables = [
+        "facebook_ads_media_costs",
+        "google_ads_media_costs",
+        "pageviews",
+        "customer_leads"
+    ]
+    cursor = conn.cursor()
+    for table in tables:
+        cursor.execute(f"truncate sor.{table} cascade")
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+
 def is_available():
     try:
         conn = psycopg2.connect("dbname='marketing' user='admin' host='localhost' password='admin' connect_timeout=1 ")
