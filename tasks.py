@@ -7,6 +7,9 @@ def check_and_wait_db_availability(c):
         print("waiting for db be available")
     print("db ready")
 
+@task(check_and_wait_db_availability)
+def execute_migration(c):
+    c.run("alembic upgrade head")
 
 def is_available():
     try:
