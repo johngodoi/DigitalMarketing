@@ -1,3 +1,4 @@
+from extract.PageViewParser import PageViewParser
 from extract.ingestion_executor import IngestionExecutor
 from extract.insert_queries import insert_queries
 from services.postgres_service import PostgreSQLService
@@ -10,6 +11,9 @@ if __name__ == '__main__':
                                          user="admin",
                                          password="admin")
     ingestion_executor = IngestionExecutor(spark_service, postgres_service)
-    ingestion_executor.execute(insert_queries["customer_leads"], "csv", "../datasets/data/customer_leads_funnel.csv", "false")
+    ingestion_executor.execute(insert_queries["pageviews"], "text", "../datasets/data/pageview.txt",
+                               parser=PageViewParser())
+    ingestion_executor.execute(insert_queries["customer_leads"], "csv", "../datasets/data/customer_leads_funnel.csv",
+                               header="false")
     ingestion_executor.execute(insert_queries["facebook"], "json", "../datasets/data/facebook_ads_media_costs.jsonl")
     ingestion_executor.execute(insert_queries["google"], "json", "../datasets/data/google_ads_media_costs.jsonl")
