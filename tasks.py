@@ -1,15 +1,18 @@
 from invoke import task
 import psycopg2
 
+
 @task
 def check_and_wait_db_availability(c):
     while not is_available():
         print("waiting for db be available")
     print("db ready")
 
+
 @task(check_and_wait_db_availability)
 def execute_migration(c):
     c.run("alembic upgrade head")
+
 
 def is_available():
     try:
