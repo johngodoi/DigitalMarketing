@@ -18,7 +18,7 @@ def execute_migration(c):
 
 @task
 def truncate_sor(c):
-    conn = psycopg2.connect("dbname='marketing' user='admin' host='localhost' password='admin' connect_timeout=1 ")
+    conn = psycopg2.connect("dbname='marketing' user='admin' host='postgres' password='admin' connect_timeout=1 ")
     tables = [
         "facebook_ads_media_costs",
         "google_ads_media_costs",
@@ -27,6 +27,7 @@ def truncate_sor(c):
     ]
     cursor = conn.cursor()
     for table in tables:
+        logging.info(f"truncating sor.{table}")
         cursor.execute(f"truncate sor.{table} cascade")
     conn.commit()
     cursor.close()
@@ -35,7 +36,7 @@ def truncate_sor(c):
 
 def is_available():
     try:
-        conn = psycopg2.connect("dbname='marketing' user='admin' host='localhost' password='admin' connect_timeout=1 ")
+        conn = psycopg2.connect("dbname='marketing' user='admin' host='postgres' password='admin' connect_timeout=1 ")
         conn.close()
         return True
     except:

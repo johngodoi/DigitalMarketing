@@ -6,7 +6,7 @@ from services.spark_service import SparkService
 
 if __name__ == '__main__':
     spark_service = SparkService(app_name="ingestion")
-    postgres_service = PostgreSQLService(host="localhost",
+    postgres_service = PostgreSQLService(host="postgres",
                                          database="marketing",
                                          user="admin",
                                          password="admin")
@@ -14,3 +14,4 @@ if __name__ == '__main__':
         ingestion_list = yaml.safe_load(stream)
 
     IngestionExecutor(spark_service, postgres_service).execute(ingestion_list)
+

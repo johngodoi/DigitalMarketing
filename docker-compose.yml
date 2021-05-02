@@ -6,7 +6,6 @@ services:
       POSTGRES_DB: marketing
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-    container_name: "itau_postgres"
     ports:
       - "5432:5432"
 
@@ -32,3 +31,14 @@ services:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
     command: server /data
+
+  app:
+    build: .
+    volumes:
+      - ./datasets:/itau/datasets
+    links:
+      - postgres
+    depends_on:
+      - postgres
+    command:  sh -c "invoke execute-migration ; invoke truncate-sor ; cd /itau/app ; python main.py"
+
