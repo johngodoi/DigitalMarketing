@@ -1,15 +1,47 @@
 # IFDSItauMarketing
-This repository attempts to provide a solution for Marketing Digital challenge as part of Analytics Engineer Exam.
+This repository attempts to provide a solution for Marketing Digital challenge as part 
+of Analytics Engineer Exam at Itaú Decision Science Team.
 
 ## Requirements:
+
+In order to be able to run this application, you should have in your machine:
+
 * docker
 
 ## How to launch the application:
+
+In the root folder of this application, call the following command line to build and run the solution:
+
 ````shell
 docker-compose up -d
 ````
 
+## How the application works:
+
+1. Tables that are going to host the data from the ingestion are defined in alembic scripts
+   * They are created during the building phase of the application as soon as the database is available
+2. Invoke is used to automate some tasks like checking the database availability, calling alembic migration 
+   and truncate sor tables
+3. It first loads a configuration file (`ingestion.yml`) which contains a list of information 
+   about the ingestions to be executed.
+   * The ingestion contains the following information:
+     * **schema**: name of the schema in the database where table is created
+     * **name**: name of the table in that schema which will persist the data
+     * **fields**: fields name in the order they are expected to be read from the file and inserted in the table
+     * **file_format**: file format to be ingested (the values expected here are going to be 
+       passed to **pyspark** when reading the file)
+     * **file_path**: path where resides the file to be ingested
+     * **header**: it tells if the file contains a header
+     * **parser**: **Python** script initializing parser to be used during the ingestion
+4. Uses **pyspark** to read the files. i.e.: `PageViewParser()` for pageviews and `None` and it is not required
+5. Create a **insert sql statement** for each record
+6. Executes the insertions in the **postgresql** database
+7. Then it starts to execute `*.sql` scripts for transforming the data model to one more dimensional 
+8. Afterwards it execute other `*.sql` scripts for creating some specialized tables and views
+
+
 ## Findings about the data:
+
 * a client can have more than one device
 * a device can have more than one ip address
 * a device can have seen more than one campaign
