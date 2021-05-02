@@ -1,4 +1,5 @@
 from extract.query_builder import QueryBuilder
+from extract.PageViewParser import PageViewParser
 
 
 class IngestionExecutor:
@@ -10,11 +11,11 @@ class IngestionExecutor:
     def execute(self, ingestion_list):
         for ingestion in ingestion_list:
             self._execute(
-                insert_query=QueryBuilder.build_insert(ingestion.schema, ingestion.name, ingestion.fields),
-                file_format=ingestion.file_format,
-                file_path=ingestion.file_path,
-                header=ingestion.header,
-                parser=ingestion.parser
+                insert_query=QueryBuilder.build_insert(ingestion['schema'], ingestion['name'], ingestion['fields']),
+                file_format=ingestion['file_format'],
+                file_path=ingestion['file_path'],
+                header=ingestion['header'],
+                parser=eval(ingestion['parser']) if ingestion['parser'] else None
             )
 
     def _execute(self, insert_query, file_format, file_path, header="true", parser=None):
