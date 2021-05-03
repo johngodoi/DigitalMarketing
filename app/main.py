@@ -4,6 +4,7 @@ from extract.ingestion_executor import IngestionExecutor
 from services.postgres_service import PostgreSQLService
 from services.spark_service import SparkService
 from sql.sql_script_executor import SQLScriptExecutor
+from utils.logging import logging
 
 if __name__ == '__main__':
     spark_service = SparkService(app_name="ingestion")
@@ -16,23 +17,10 @@ if __name__ == '__main__':
 
     IngestionExecutor(spark_service, postgres_service).execute(ingestion_list)
 
-    sql_script_executor = SQLScriptExecutor(postgres_service)
-    sql_script_executor.execute("transformation", "create", "table", "sot", [
-        "dim_campaign_media",
-        "dim_customer_lead",
-        "dim_viewer",
-        "fact_campaign_cost_effectiveness",
-        "fact_credit_decision",
-        "fact_customer_signature",
-        "fact_page_views"
-    ])
-    sql_script_executor.execute("specialized", "create", "table", "espec", [
-        "campaign_clicks",
-        "campaign_costs",
-        "campaign_leads",
-        "campaign_revenue",
-    ])
-    sql_script_executor.execute("specialized", "create", "view", "espec", [
-        "campaign_efficiency"
-    ])
+    with open("../datasets/configuration/sql_scripts.yml", 'r') as stream:
+        sql_scripts = yaml.safe_load(stream)
+
+    SQLScriptExecutor(postgres_service).execute(sql_scripts)
+
+    logging.info("That is it!")
 

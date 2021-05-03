@@ -36,8 +36,7 @@ docker-compose up -d
 4. Uses **pyspark** to read the files. i.e.: `PageViewParser()` for pageviews and `None` and it is not required
 5. Create a **insert sql statement** for each record
 6. Executes the insertions in the **postgresql** database
-7. Then it starts to execute `*.sql` scripts for transforming the data model to one more dimensional 
-8. Afterwards it execute other `*.sql` scripts for creating some specialized tables and views
+7. Then it starts to execute `*.sql` scripts registered at `sql_scripts.yml` in the same order as in the file
 
 
 ## Findings about the data:
@@ -73,7 +72,7 @@ limit 1;
 ````
 | campaign_name | profit |
 | ------------- |:-------------:|
-| emprestimo_garantia|home|natal2018 | 34065.47000000004 |
+| emprestimo_garantia&#124;home&#124;natal2018 | 34065.47000000004 |
 
 
 ### 3 - Which ad creative is the most effective in terms of clicks?
