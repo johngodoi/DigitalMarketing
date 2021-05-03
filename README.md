@@ -38,6 +38,18 @@ docker-compose up -d
 6. Executes the insertions in the **postgresql** database
 7. Then it starts to execute `*.sql` scripts registered at `sql_scripts.yml` in the same order as in the file
 
+## Information to connect to database
+
+The database which we are inserting the data is going to be available locally after lauching the application.
+The information to connect to that database is the followin:
+
+| host | port | user | password | database |
+| --- | --- | --- | --- | --- |
+| localhost | 5432 | admin | admin | marketing |
+
+| JDBC string |
+| --- | 
+| postgresql://admin:admin@localhost:5432/marketing |
 
 ## Findings about the data:
 
