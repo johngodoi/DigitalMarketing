@@ -10,11 +10,16 @@ class PostgreSQLService:
             user=user,
             password=password)
 
+    def execute_sql_file(self, file):
+        cur = self.conn.cursor()
+        cur.execute(open(file, "r").read())
+        self.conn.commit()
+        cur.close()
+
     def insert(self, statement, values):
         cur = self.conn.cursor()
         records_list_template = ','.join(['%s'] * len(values))
         cur.execute(statement.format(records_list_template), values)
-
         self.conn.commit()
         cur.close()
 

@@ -52,9 +52,10 @@ docker-compose up -d
 
 ### 1 - What was the most expensive campaign?
 ````sql
-select campaign_name, cost
+select campaign_name, sum(cost)
 from espec.campaign_efficiency
-order by cost desc
+group by campaign_name
+order by sum(cost) desc
 limit 1;
 ````
 | campaign_name | cost |
@@ -64,9 +65,10 @@ limit 1;
 
 ### 2 - What was the most profitable campaign?
 ````sql
-select campaign_name, profit
+select campaign_name, sum(profit)
 from espec.campaign_efficiency
-order by profit desc
+group by campaign_name
+order by sum(profit) desc
 limit 1;
 ````
 | campaign_name | profit |

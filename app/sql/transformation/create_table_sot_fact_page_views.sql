@@ -8,8 +8,8 @@ select
      , spv.referer
      , spv.ip_address
 from sor.pageviews spv
-join sot.dim_viewer dv on spv.device_id=dv.device_id
+join sot.dim_viewer dv on trim(spv.device_id)=dv.device_id
 left join sot.dim_campaign_media dcm
-    on spv.campaign_id=cast(dcm.campaign_id as varchar(20))
-    and spv.ad_creative_id=cast(dcm.ad_creative_id as varchar(20))
-    and spv.referer  like '%' || dcm.media || '%';
+       on spv.campaign_id=cast(dcm.campaign_id as varchar(20))
+       and spv.ad_creative_id=cast(dcm.ad_creative_id as varchar(20))
+       and spv.referer  like '%' || dcm.media || '%';
